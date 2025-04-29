@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Pizza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+        }
+        .pizza {
+            width: 300px;
+            height: 300px;
+            background-color: #ffe0b3;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+        }
+        .ingredientes {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .ingrediente {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .ingrediente:hover {
+            background-color: #ffeb99;
+        }
+        .pedido {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: green;
+        }
+        .entregar {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .entregar:hover {
+            background-color: #ff9900;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jogo da Pizza</h1>
+    <p class="pedido" id="pedido">Prepare a pizza com queijo, tomate e calabresa!</p>
+    <div class="pizza" id="pizza"></div>
+    <div class="ingredientes">
+        <div class="ingrediente" id="queijo">🧀</div>
+        <div class="ingrediente" id="tomate">🍅</div>
+        <div class="ingrediente" id="calabresa">🥓</div>
+    </div>
+    <button class="entregar" onclick="verificarPizza()">Entregar Pizza</button>
+    <p class="resultado" id="resultado"></p>
+
+    <script>
+        let ingredientesPizza = [];
+        const pedido = document.getElementById("pedido");
+        const pizza = document.getElementById("pizza");
+        const resultado = document.getElementById("resultado");
+
+        // Função para adicionar ingredientes na pizza
+        function adicionarIngrediente(ingrediente) {
+            const ingredienteDiv = document.createElement("div");
+            ingredienteDiv.innerText = ingrediente;
+            ingredienteDiv.style.position = "absolute";
+            ingredienteDiv.style.left = `${Math.random() * 200}px`;
+            ingredienteDiv.style.top = `${Math.random() * 200}px`;
+            pizza.appendChild(ingredienteDiv);
+            ingredientesPizza.push(ingrediente);
+        }
+
+        // Adiciona os ingredientes nos botões
+        document.getElementById("queijo").onclick = () => adicionarIngrediente("🧀");
+        document.getElementById("tomate").onclick = () => adicionarIngrediente("🍅");
+        document.getElementById("calabresa").onclick = () => adicionarIngrediente("🥓");
+
+        // Função para verificar a pizza
+        function verificarPizza() {
+            // Pedido correto
+            const pedidoCorreto = ["🧀", "🍅", "🥓"];
+            if (JSON.stringify(ingredientesPizza.sort()) === JSON.stringify(pedidoCorreto.sort())) {
+                resultado.textContent = "Pizza pronta! 🍕";
+                resultado.style.color = "green";
+            } else {
+                resultado.textContent = "Algo está errado com a pizza. Tente novamente! 😅";
+                resultado.style.color = "red";
+            }
+            // Limpar ingredientes e preparar para o próximo pedido
+            setTimeout(() => {
+                pizza.innerHTML = "";
+                ingredientesPizza = [];
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
